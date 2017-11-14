@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
     Item which can be in a room or in the player's inventory.
 */
@@ -32,6 +34,7 @@ public class Item
 
     /**
         Get quantity.
+        @return The quantity.
     */
     public int getQuantity()
     {
@@ -50,18 +53,43 @@ public class Item
     /**
         Remove quantity.
         @param n Amount to remove.
+        @return The item removed, with quantity removed.
     */
-    public void remove(int n)
+    public Item remove(int n)
     {
+        Item r = this;
+        r.add(n - this.quantity);
+
         if (n > this.quantity)
             this.quantity = 0;
         else
             this.quantity -= n;
+
+        return r;
+    }
+
+    /**
+        Gets the singular name of the item.
+        @return Singlular name of the item.
+    */
+    public String getName()
+    {
+        return names.get(0);
+    }
+
+    /**
+        Gets the plural name of the item.
+        @return Plural name of the item.
+    */
+    public String getPluralName()
+    {
+        return plural;
     }
 
     private final int id;
-    private final String name = "";
+    private final ArrayList<String> names = new ArrayList<String>;
+    private final String plural = "";
     private final String description = "";
-    private final boolean isCarriable = True;
+    private final boolean isCarriable = true;
     private int quantity;
 }

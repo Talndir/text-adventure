@@ -66,19 +66,61 @@ public class Inventory
         Removes qty of item with specified id.
         @param id ID of item.
         @param qty Number of items to remove.
+        @return The item removed, with quantity removed.
     */
-    public void remove(int id, int qty)
+    public Item remove(int id, int qty)
     {
         int q = this.getQuantity(id);
 
         if (q == 0)
+        {
             System.out.println("That item doesn't exist");
+            return null;
+        }
         else if (q < qty)
+        {
             System.out.println("There aren't that many items");
-        else if (q == qty)
-            items.remove(find(id));
-        else
-            items.get(id).remove(qty);
+            return null;
+        }
+        
+        Item r = items.get(id).remove(qty);
+
+        if (q == qty)
+           items.remove(find(id));
+        
+        return r;
+    }
+
+    /**
+        Prints all item descriptions.
+    */
+    public void printAll()
+    {
+        for (Item i : items)
+        {
+            int q = i.getQuantity();
+            String n = "";
+            String r = "";
+
+            if (q == 1)
+            {
+                n = i.getName();
+                String f = n.substring(0, 1).toLowerCase();
+
+                if (f == "a" || f == "e" || f == "i" || f == "o" || f == "u")
+                    r += "An ";
+                else
+                    r += "A ";
+            }
+            else
+            {
+                n = i.getPluralName();
+                r += q + " ";
+            }
+
+            r += n + ".";
+            System.out.println(r);
+        }
     }
 
     private ArrayList<Item> items;

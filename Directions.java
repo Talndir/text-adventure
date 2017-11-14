@@ -2,16 +2,19 @@
     8 cardinal directions as well as up and down.
 */
 
-public enum Directions
+class Directions
 {
-    NORTH,
-    NORTHEAST,
-    EAST,
-    SOUTHEAST,
-    SOUTH,
-    SOUTHWEST,
-    WEST,
-    NORTHWEST,
-    UP,
-    DOWN
+    static final int 
+    NORTH = 0,
+    NORTHEAST = 1,
+    EAST = 2,
+    SOUTHEAST = 3,
+    SOUTH = 4,
+    SOUTHWEST = 5,
+    WEST = 6,
+    NORTHWEST = 7,
+    UP = 8,
+    DOWN = 9;
+
+    static final int size = 10;
 }
