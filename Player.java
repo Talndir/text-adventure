@@ -39,7 +39,7 @@ public class Player
     */
     public void move(int d)
     {
-        r = currentRoom.getRoom(d)
+        Room r = currentRoom.getRoom(d);
         if (r == null)
             System.out.println("You can't go that way");
         else

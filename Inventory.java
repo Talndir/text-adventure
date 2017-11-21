@@ -20,7 +20,13 @@ public class Inventory
     */
     private int find(int id)
     {
-        return items.indexOf(new Item(id));
+        for (int i = 0; i < items.size(); ++i)
+        {
+            if (items.get(i).getFirst() == id)
+                return i;
+        }
+        
+        return -1;
     }
 
     /**
@@ -33,33 +39,25 @@ public class Inventory
         int r = find(id);
         
         if (r != -1)
-            return items.get(r).getQuantity();
+            return items.get(r).getSecond();
         else
             return 0;
     }
 
     /**
-        Gets item with the specified id.
-        @param id Id to look for.
-        @return Item with specified id.
-    */
-    public Item get(int id)
-    {
-        return items.get(find(id));
-    }
-
-    /**
         Adds an item to the inventory.
-        @param x Item to add.
+        @param id ID of item to add.
+        @param qty Quantity to add.
     */
-    public void add(Item x)
+    public void add(int id, int qty)
     {
-        int r = this.getQuantity(x.getId());
+        int index = find(id);
+        int r = getQuantity(index);
 
         if (r != 0)
-            items.get(items.indexOf(x)).add(x.getQuantity());
+            items.get(index).setSecond(items.get(index).getSecond() + qty);
         else
-            items.add(x);
+            items.add(new Pair<int, int>(id, qty));
     }
 
     /**
@@ -68,27 +66,28 @@ public class Inventory
         @param qty Number of items to remove.
         @return The item removed, with quantity removed.
     */
-    public Item remove(int id, int qty)
+    public boolean remove(int id, int qty)
     {
-        int q = this.getQuantity(id);
+        int index = find(id);
+        int q = getQuantity(index);
 
         if (q == 0)
         {
             System.out.println("That item doesn't exist");
-            return null;
+            return false;
         }
         else if (q < qty)
         {
             System.out.println("There aren't that many items");
-            return null;
+            return false;
         }
         
-        Item r = items.get(id).remove(qty);
-
         if (q == qty)
-           items.remove(find(id));
-        
-        return r;
+           items.remove(index);
+        else
+            items.get(id).setSecond(items.get(id).getSecond() - qty);
+
+        return true;
     }
 
     /**
@@ -96,15 +95,15 @@ public class Inventory
     */
     public void printAll()
     {
-        for (Item i : items)
+        for (Pair<int, int> i : items)
         {
-            int q = i.getQuantity();
+            int q = i.getSecond();
             String n = "";
             String r = "";
 
             if (q == 1)
             {
-                n = i.getName();
+                n = TextAdventure.itemIdMap.get(i.getFirst());
                 String f = n.substring(0, 1).toLowerCase();
 
                 if (f == "a" || f == "e" || f == "i" || f == "o" || f == "u")
@@ -122,6 +121,6 @@ public class Inventory
             System.out.println(r);
         }
     }
-
-    private ArrayList<Item> items;
+    
+    private ArrayList<Pair<int, int>> items;
 }

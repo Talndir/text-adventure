@@ -9,8 +9,12 @@ public class Room
     /**
         Constructs a room.
     */
-    public Room()
+    public Room(int id, String name, String description)
     {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+
         for (int i = 0; i < Directions.size; ++i)
             rooms.add(null);
     }
@@ -40,7 +44,7 @@ public class Room
         @param qty How many of the item to take.
         @return The item taken, with quantity taken.
     */
-    public Item takeItem(int id, int qty)
+    public boolean takeItem(int id, int qty)
     {
         return items.remove(id, qty);
     }
@@ -49,9 +53,9 @@ public class Room
         Puts an item into the room.
         @param x Item to add.
     */
-    public void putItem(Item x)
+    public void putItem(int id, int qty)
     {
-        items.add(x);
+        items.add(id, qty);
     }
 
     /**
@@ -85,9 +89,10 @@ public class Room
         System.out.println(description);
         items.printAll();
     }
-
-    private final String name = "";
-    private final String description = "";
+    
+    private final int id;
+    private final String name;
+    private final String description;
     private Inventory items;
     private ArrayList<Room> rooms;
     private boolean visited = false;
