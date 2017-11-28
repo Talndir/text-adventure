@@ -17,6 +17,8 @@ public class TextAdventure
 
         System.out.println("Adding rooms");
         this.addRooms();
+        System.out.println("Adding items");
+        this.addItems();
     }
     
     /**
@@ -55,9 +57,13 @@ public class TextAdventure
                 rooms.add(r);
             }
         }
-        catch (IOException e)
+        catch (FileNotFoundException e)
         {
             System.out.println("Error: data/rooms.data not found");
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error: error reading data/rooms.data");
         }
     }
 
@@ -66,6 +72,38 @@ public class TextAdventure
     */
     private static void addItems()
     {
+        try
+        {
+            File file = new File("data/items.data");
+            BufferedReader in = new BufferedReader(new FileReader(file));
+
+            String line;
+            int id;
+            String names, pluralName, description;
+            
+            while((line = in.readLine()) != null)
+            {
+                // Read ID, names, plural name and description
+                id = Integer.parseInt(line);
+                names = in.readLine();
+                pluralName = in.readLine();
+                description = in.readLine();
+                
+                // Create item
+                itemIndex.add(new Item(id, names, pluralName, description));
+
+                // Read "#"
+                in.readLine();
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Error: data/items.data not found");
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error: error reading data/items.data");
+        }
     }
 
     /**

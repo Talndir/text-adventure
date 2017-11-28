@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
     Item which can be in a room or in the player's inventory.
@@ -9,10 +10,12 @@ public class Item
     /**
         Constructs an item given an id.
     */
-    public Item(int id)
+    public Item(int id, String names, String pluralName, String description)
     {
         this.id = id;
-        names = new ArrayList<String>();
+        this.names = new ArrayList<String>(Arrays.asList(names.split(";")));
+        this.pluralName = new String(pluralName);
+        this.description = new String(description);
     }
 
     /**
@@ -48,12 +51,20 @@ public class Item
     */
     public String getPluralName()
     {
-        return plural;
+        return pluralName;
+    }
+
+    /**
+        Prints info about the item.
+    */
+    public void print()
+    {
+        System.out.println(this.getName() + ": " + this.description);
     }
 
     private final int id;
     private final ArrayList<String> names;
-    private final String plural = "";
-    private final String description = "";
+    private final String pluralName;
+    private final String description;
     private final boolean isCarriable = true;
 }
