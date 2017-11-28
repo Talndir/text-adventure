@@ -12,11 +12,13 @@ public class Room
     public Room(int id, String name, String description)
     {
         this.id = id;
-        this.name = name;
-        this.description = description;
+        this.name = new String(name);
+        this.description = new String(description);
+        this.rooms = new ArrayList<Room>();
+        this.items = new Inventory();
 
         for (int i = 0; i < Directions.size; ++i)
-            rooms.add(null);
+            this.rooms.add(null);
     }
 
     /**
@@ -73,7 +75,10 @@ public class Room
     public void print()
     {
         if (visited)
+        {
             System.out.println("You are in " + name + ".");
+            items.printAll();
+        }
         else
         {
             this.printDesc();
@@ -93,7 +98,7 @@ public class Room
     private final int id;
     private final String name;
     private final String description;
-    private Inventory items;
-    private ArrayList<Room> rooms;
+    private final Inventory items;
+    private final ArrayList<Room> rooms;
     private boolean visited = false;
 }

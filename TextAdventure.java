@@ -1,17 +1,22 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.BufferedReader;
+import java.io.*;
 
 /**
-    Text adventure game.
+    Text adventure class, base class for entire game.
 */
 
 public class TextAdventure
 {
-    public static void main(String args[])
+    public TextAdventure()
     {
-        System.out.println("Test");
+        System.out.println("Creating objects");
+        this.rooms = new ArrayList<Room>();
+        this.player = new Player();
+
+        System.out.println("Adding rooms");
+        this.addRooms();
     }
     
     /**
@@ -19,31 +24,40 @@ public class TextAdventure
     */
     private void addRooms()
     {
-        BufferedReader in = new BufferedReader("data/rooms.data");
-
-        String line;
-        int id;
-        String name, desc;
-        
-        while ((line = in.readLine()) != null)
+        try
         {
-            // Read ID, name and description
-            id = Integer.parseInt(line);
-            line = in.readLine();
-            desc = in.readLine();
+            File file = new File("data/rooms.data");
+            BufferedReader in = new BufferedReader(new FileReader(file));
 
-            // Create room
-            Room r = new Room(id, name, desc);
-
-            //Read items
-            while ((line = in.readLine()) != "#")
+            String line;
+            int id;
+            String name, desc;
+            
+            while ((line = in.readLine()) != null)
             {
-                String[] split = line.split(" ");
-                r.putItem(
-                    Integer.parseInt(split[0]), Integer.parseInt(split[1]));
-            }
+                // Read ID, name and description
+                id = Integer.parseInt(line);
+                name = in.readLine();
+                desc = in.readLine();
+                
+                // Create room
+                Room r = new Room(id, name, desc);
 
-            rooms.add(r);
+                //Read items
+                while (!(line = in.readLine()).equals("#"))
+                {
+                    System.out.println("<" + line + ">");
+                    String[] split = line.split(" ");
+                    r.putItem(
+                        Integer.parseInt(split[0]), Integer.parseInt(split[1]));
+                }
+
+                rooms.add(r);
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error: data/rooms.data not found");
         }
     }
 
@@ -59,14 +73,28 @@ public class TextAdventure
         @param id ID of item to get.
         @return Item of that ID from the item index.
     */
-    public static Item getItem(int id)
+    public static Item getItemById(int id)
     {
+        return itemIdMap.get(id);
     }
 
-    private ArrayList<Room> rooms;
-    private Player player;
+    /**
+        Getter for item, by name.
+        @param name Name of the item to get.
+        @return Item of that name from the item index.
+    */
+    public static Item getItemByName(String name)
+    {
+        return getItemById(itemNameMap.get(name));
+    }
+
+    private final ArrayList<Room> rooms;
+    private final Player player;
     
-    public static ArrayList<Item> itemIndex;
-    public static HashMap<String, int> itemNameMap;
-    public static Map<int, Room> itemIdMap;
+    private static final ArrayList<Item> itemIndex
+        = new ArrayList<Item>();
+    private static final HashMap<String, Integer> itemNameMap
+        = new HashMap<String, Integer>();
+    private static final HashMap<Integer, Item> itemIdMap
+        = new HashMap<Integer, Item>();
 }

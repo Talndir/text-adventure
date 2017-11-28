@@ -11,6 +11,7 @@ public class Inventory
     */
     public Inventory()
     {
+        items = new ArrayList<Pair<Integer, Integer>>();
     }
     
     /**
@@ -57,7 +58,7 @@ public class Inventory
         if (r != 0)
             items.get(index).setSecond(items.get(index).getSecond() + qty);
         else
-            items.add(new Pair<int, int>(id, qty));
+            items.add(new Pair<Integer, Integer>(id, qty));
     }
 
     /**
@@ -95,15 +96,16 @@ public class Inventory
     */
     public void printAll()
     {
-        for (Pair<int, int> i : items)
+        for (Pair<Integer, Integer> i : items)
         {
             int q = i.getSecond();
             String n = "";
             String r = "";
+            Item x = TextAdventure.getItemById(i.getFirst());
 
             if (q == 1)
             {
-                n = TextAdventure.itemIdMap.get(i.getFirst());
+                n = x.getName();
                 String f = n.substring(0, 1).toLowerCase();
 
                 if (f == "a" || f == "e" || f == "i" || f == "o" || f == "u")
@@ -113,7 +115,7 @@ public class Inventory
             }
             else
             {
-                n = i.getPluralName();
+                n = x.getPluralName();
                 r += q + " ";
             }
 
@@ -122,5 +124,5 @@ public class Inventory
         }
     }
     
-    private ArrayList<Pair<int, int>> items;
+    private final ArrayList<Pair<Integer, Integer>> items;
 }

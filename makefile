@@ -1,7 +1,7 @@
 JC = javac
 JRE = java
 
-TARGET = TextAdventure
+TARGET = Main
 
 all: $(TARGET)
 
